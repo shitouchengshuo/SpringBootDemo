@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="device-module" targetNamespace="http://www.phicomm.com/XMLSchema"
+           xmlns="http://www.phicomm.com/XMLSchema"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           attributeFormDefault="qualified" elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation>
+            <![CDATA[
+                维护设备信息
+            ]]>
+        </xs:documentation>
+    </xs:annotation>
+
+    <!--组件或attr以ref引入的方式在xml文件中会显示有错误-->
+    <xs:element name="device-module">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="module">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="product-name" type="xs:string"/>
+                            <xs:element name="product-number" type="xs:string"/>
+                            <xs:element name="product-icon" type="xs:string"/>
+                            <xs:element name="device-type" type="xs:string"/>
+                            <xs:element name="app-id" type="xs:string"/>
+                            <xs:element name="description" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="hide" form="unqualified" type="xs:boolean" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

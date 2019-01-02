@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<device-module xmlns="http://www.phicomm.com/XMLSchema"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.phicomm.com/XMLSchema device-module.xsd">
+
+    <module hide="false">
+        <product-name>xx</product-name>
+        <product-number>xx</product-number>
+        <product-icon>https://xxx.png
+        </product-icon>
+        <device-type>xx</device-type>
+        <app-id>xx</app-id>
+        <description>xx</description>
+    </module>
+
+
+
+</device-module>
