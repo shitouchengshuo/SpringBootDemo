@@ -52,7 +52,13 @@ public class UserService {
         UserBean userBean = new UserBean(userId, age, name);
         userRepository.save(userBean);
         UserMongoBean userMongoBean = new UserMongoBean(userId, age, name);
-        userMongoRepository.save(userMongoBean);
+        // 关于mongo：当主键"_id"不存在时，insert和save都是添加一个新的文档
+        // 但主健"_id"存在时，就有些不同了
+        // insert:当主键"_id"在集合中存在时，会报主键重复的错误提示
+        // save:当主键"_id"在集合中存在时，进行更新
+
+        // userMongoRepository.save(userMongoBean);
+        userMongoRepository.insert(userMongoBean);
     }
 
     /**
