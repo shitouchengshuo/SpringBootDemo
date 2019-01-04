@@ -1,4 +1,4 @@
-package com.qiqi.model;
+package com.qiqi.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.boot.jackson.JsonComponent;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @date 2018/12/19 16:57
+ * 返回给前端的响应
  */
 @Component
 @JsonComponent

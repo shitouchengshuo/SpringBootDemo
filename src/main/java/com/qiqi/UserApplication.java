@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class BindApplication {
+public class UserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BindApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 
 }

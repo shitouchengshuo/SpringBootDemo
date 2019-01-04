@@ -2,7 +2,6 @@ package com.qiqi.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiqi.model.VO.ProductionModel;
-import com.qiqi.utils.ExceptionUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -32,7 +31,7 @@ public class ProductionConfig {
         try {
             readConfig();
         } catch (FileNotFoundException | DocumentException e) {
-            logger.info(ExceptionUtil.getErrorMessage(e));
+            // logger.info(ExceptionUtil.getErrorMessage(e));
         }
     }
 

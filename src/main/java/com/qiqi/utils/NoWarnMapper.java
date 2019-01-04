@@ -1,4 +1,4 @@
-package com.qiqi;
+package com.qiqi.utils;
 
 import org.apache.ibatis.annotations.Mapper;
 

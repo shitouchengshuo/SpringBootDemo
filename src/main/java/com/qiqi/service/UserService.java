@@ -1,9 +1,9 @@
 package com.qiqi.service;
 
-import com.qiqi.config.ProductionConfig;
-import com.qiqi.controller.UserController;
 import com.qiqi.dao.UserMongoRepository;
 import com.qiqi.dao.UserRepository;
+import com.qiqi.exception.DataFormatException;
+import com.qiqi.exception.UserNotFoundException;
 import com.qiqi.model.VO.UserVO;
 import com.qiqi.model.entity.UserBean;
 import com.qiqi.model.entity.UserMongoBean;
@@ -12,6 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @date 2018/12/20 13:39
@@ -26,21 +32,54 @@ public class UserService {
     @Autowired
     private RedisTemplate redisTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 通过user_id获取用户
      * @param userId
      * @return
      */
-    public UserVO getUser(long userId){
-        UserVO userVO = new UserVO();
-        UserBean user = userRepository.findTop1ById(userId);
+    public UserVO getUser(String userId) {
+        long id = Long.parseLong(userId);
+        UserBean user = userRepository.findTop1ById(id);
         //userMongoRepository.findTop1ByUserId(2);
         if (user != null){
-            userVO.setUserId(user.getId());
-            userVO.setAge(user.getAge());
-            userVO.setName(user.getName());
+            UserVO userVO = new UserVO(user.getId(), user.getAge(), user.getName());
+            return userVO;
+        }else {
+            return null;
         }
-        return userVO;
+    }
+
+    /**
+     * 通过age获取用户
+     *
+     * List -> Map
+     * 需要注意的是：
+     * toMap 如果集合对象有重复的key，会报错Duplicate key ....
+     *  apple1,apple12的id都为1。
+     *  可以用 (k1,k2)->k1 来设置，如果有重复的key,则保留key1,舍弃key2
+     */
+    public Map<Long, UserVO> getUserByAge(String age){
+        int userAge = 0;
+        try {
+            userAge = Integer.parseInt(age);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            logger.error(e.getStackTrace().toString());
+        }
+        List<UserBean> userList = userRepository.findAllByAge(userAge);
+        List<UserVO> userVOList = new ArrayList<>();
+        if (null != userList){
+            for (UserBean user : userList){
+                UserVO userVO = new UserVO(user.getId(), user.getAge(), user.getName());
+                userVOList.add(userVO);
+            }
+            Map<Long, UserVO> map =
+                userVOList.stream().collect(Collectors.toMap(UserVO::getUserId, a -> a,(k1, k2)->k1));
+            return map;
+        }else {
+            return null;
+        }
     }
 
     /**
@@ -66,24 +105,17 @@ public class UserService {
      * @param userId
      * @return
      */
-    public void deleteUser(long userId, int age, String name){
+    public void deleteUser(long userId )throws UserNotFoundException {
         //先查询数据是否存在，再删除
-        // if (userRepository.existsById(userId)){
-             userRepository.deleteById(userId);
-        // }else {
-        //     logger.error("userId：" + userId +": 用户不存在，不能删除");
-        // }
-        // if (userRepository.existsByName(name)){
-            userRepository.deleteAllByName(name);
-        // }else {
-        //     logger.error("userName：" + name +": 用户不存在，不能删除");
-        // }
-        //
-        // userRepository.deleteAllByAge(age);
-        System.out.println("------"+name+"-------");
+        if (userRepository.existsById(userId) == false){
+             throw new UserNotFoundException();
+        }
+        userRepository.deleteById(userId);
+        //userRepository.deleteAllByName(name);
+        //userRepository.deleteAllByAge(age);
         userMongoRepository.deleteAllByUserId(userId);
-        userMongoRepository.deleteAllByAge(age);
-        userMongoRepository.deleteAllByName(name);
+        //userMongoRepository.deleteAllByAge(age);
+        //userMongoRepository.deleteAllByName(name);
     }
 
 }

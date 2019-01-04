@@ -2,8 +2,10 @@ package com.qiqi.model.VO;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class UserVO {
+public class UserVO implements Serializable {
 
     private long userId;
     private int age;

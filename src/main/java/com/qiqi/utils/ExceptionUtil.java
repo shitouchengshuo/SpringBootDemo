@@ -1,15 +1,17 @@
 package com.qiqi.utils;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.qiqi.exception.ResultStatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 异常处理
+ * 返回异常的处理
  */
 public class ExceptionUtil {
 
@@ -46,6 +48,12 @@ public class ExceptionUtil {
             }
         }
         return sw.toString();
+    }
+
+    public static String resultOf(ResultStatusCode resultStatusCode) {
+        SerializeConfig config = new SerializeConfig();
+        config.configEnumAsJavaBean(ResultStatusCode.class);
+        return JSON.toJSONString(resultStatusCode, config);
     }
 
 }
