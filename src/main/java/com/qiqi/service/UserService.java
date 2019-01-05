@@ -60,13 +60,7 @@ public class UserService {
      *  可以用 (k1,k2)->k1 来设置，如果有重复的key,则保留key1,舍弃key2
      */
     public Map<Long, UserVO> getUserByAge(String age){
-        int userAge = 0;
-        try {
-            userAge = Integer.parseInt(age);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            logger.error(e.getStackTrace().toString());
-        }
+        int userAge = Integer.parseInt(age);
         List<UserBean> userList = userRepository.findAllByAge(userAge);
         List<UserVO> userVOList = new ArrayList<>();
         if (null != userList){
