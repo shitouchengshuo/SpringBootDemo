@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 读取配置在device-module.xml文件中的数据
  * @date 2018/12/21 13:26
  */
 @Component
